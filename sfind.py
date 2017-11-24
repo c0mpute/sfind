@@ -17,12 +17,10 @@ _TEXT_BOMS = (
     codecs.BOM_UTF8,
 )
 
-
 def list_programs():
     global PROGRAMS
     for path in PATH:
         PROGRAMS[path] = os.listdir(path)
-
 
 def is_binary_file(source_path):
     with open(source_path, 'rb') as source_file:
@@ -71,8 +69,6 @@ def parse_script(path, parent=None):
             if not line.strip().startswith('#'):
                 for p in path_regex.findall(line):
                     if is_executable(p) and not is_duplicate(root_node, p):
-                        #executables.append(p)
-                        #node = Node(p, parent=root_node)
                         parse_script(p, root_node)
                 for p in assign_regex.findall(line):
                     command = is_command(p.replace('=', ''))
@@ -82,26 +78,8 @@ def parse_script(path, parent=None):
                 for word in words:
                     command = is_command(word)
                     if command and not is_duplicate(root_node, command):
-                        #executables.append(command)
-                        #node = Node(command, parent=root_node)
                         parse_script(command, root_node)
-        #executables = list(set(executables))
-        #for child in root_node.children:
-        #    if (not parent and not is_binary_file(child.name)) or (parent and not is_binary_file(child.name) and not child.name == parent.name):
-        #        if not is_duplicate(root_node, child.name):
-        #            parse_script(child.name, root_node)
-
-        #for executable in executables:
-        #    if type(executable) is list: executable = executable[0]
-        #    if not is_binary_file(executable) and not executable == parent:
-
-        #        executables.append(parse_script(executable, path))
-        #return executables
     return root_node
-
-
-
-
 
 def build_tree(path):
     nodes = []
