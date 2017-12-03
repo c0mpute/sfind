@@ -4,9 +4,20 @@ import re, os, stat, sys
 import codecs
 import types
 import getopt
-from termcolor import colored
+#from termcolor import colored
 import argparse
 from anytree import Node, RenderTree, AsciiStyle, Walker
+
+class bcolors:
+    HEADER = '\033[95m'
+    RED = '\033[31m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 INIT_REGEX = r'etc\/(init\.d\/|sysinit\.d\/|rc[\w\d]*\.d\/|rc[\w\d]*\.(sh|local)+)+[a-z\.\_]*'
 PATH = ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin']
@@ -22,6 +33,8 @@ _TEXT_BOMS = (
     codecs.BOM_UTF8,
 )
 
+
+
 def print_node(node):
     for pre, fill, node in RenderTree(node, style=AsciiStyle()):
             print("%s%s" % (pre, node.name))
@@ -31,7 +44,7 @@ def highlight_node(name, node, color='red'):
         if name in node.name:
             start = node.name.find(name)
             end = start + len(name)
-            print pre + node.name[:start] + colored(node.name[start:end], color) + node.name[end:]
+            print pre + node.name[:start] + bcolors.RED + node.name[start:end] + bcolors.ENDC + node.name[end:]
         else:
             print("%s%s" % (pre, node.name))
 
